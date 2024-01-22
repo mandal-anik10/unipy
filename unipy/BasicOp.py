@@ -111,13 +111,15 @@ def FourierSeries(y_data, x_data, nc=10):
     y_new : list : fourier function
     '''
     cc, cs, y_new = [], [], []
+    
+    l = x_data[-1]-x_data[1]
 
     for i in range(nc):
-        yc = y_data * cos(pi * i * x_data)
-        ys = y_data * sin(pi * i * x_data)
+        yc = y_data * cos(2 * pi * i * x_data / l)
+        ys = y_data * sin(2 * pi * i * x_data / l)
 
-        sc = Integrate(yc, x_data)
-        ss = Integrate(ys, x_data)
+        sc = (2/l) * Integrate(yc, x_data)
+        ss = (2/l) * Integrate(ys, x_data)
 
         cc.append(sc)
         cs.append(ss)
@@ -127,7 +129,7 @@ def FourierSeries(y_data, x_data, nc=10):
     for i in range(len(x_data)):
         s = 0
         for j in range(nc):
-            s = s + cc[j] * cos(pi * j *x_data[i]) + cs[j] * sin(pi * j * x_data[i])
+            s = s + cc[j] * cos(2 * pi * j * x_data[i] / l) + cs[j] * sin(2 * pi * j * x_data[i] / l)
 
         y_new.append(s)
     return cc, cs, y_new     
